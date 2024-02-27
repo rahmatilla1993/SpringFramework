@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>Intro</title>
+</head>
+<body>
+<div class="container">
+    <div class="rows">
+        <div class="col-8 offset-2">
+            <nav th:replace="fragments :: navbar"></nav>
+            <form class="mt-2" method="post" th:object="${todo}" th:action="@{/todo/delete/{id}(id=*{getId()})}">
+                <input type="hidden" value="DELETE" name="_method">
+                <h1 class="alert alert-danger" th:text="|Are you sure delete todo with title *{getTitle()} ?|"></h1>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a th:href="@{/todo/all}" class="btn btn-success">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<section th:replace="fragments :: js"></section>
+</body>
+</html>

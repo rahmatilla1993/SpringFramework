@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>Intro</title>
+</head>
+<body>
+<div class="container">
+    <div class="rows">
+        <div class="col-8 offset-2">
+            <nav th:replace="fragments :: navbar"></nav>
+            <h1>Edit Todo</h1>
+            <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{getId()})}" th:object="${todo}">
+                <input type="hidden" name="_method" value="PUT">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Todo title</label>
+                    <input type="text" class="form-control" id="title" name="title"
+                           th:attr="value=*{getTitle()}">
+                </div>
+                <div class="mb-3">
+                    <label for="priority" class="form-label">Priority</label>
+                    <select name="priority" id="priority" class="form-select"
+                            th:attr="value=*{getPriority()}">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<section th:replace="fragments :: js"></section>
+</body>
+</html>

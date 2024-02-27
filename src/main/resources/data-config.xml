@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+          https://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:property-placeholder location="classpath:jdbc-datasource.properties"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          c:url="${jdbc.url}"
+          c:username="${jdbc.username}"
+          c:password="${jdbc.password}"
+          p:driverClassName="${jdbc.driver}"
+    />
+
+    <bean id="localContainerEntityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:persistenceUnitName="default"
+    />
+
+    <context:annotation-config/>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          c:emf-ref="localContainerEntityManagerFactory"
+          p:dataSource-ref="dataSource"
+    />
+
+    <tx:annotation-driven/>
+
+    <!--    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"-->
+    <!--          p:dataSource-ref="dataSource"-->
+    <!--          p:packagesToScan="org.example.entity">-->
+    <!--        <property name="hibernateProperties">-->
+    <!--            <props>-->
+    <!--                <prop key="hibernate.dialect">${hibernate.dialect}</prop>-->
+    <!--                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>-->
+    <!--                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>-->
+    <!--            </props>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="todoDaoWIthHibernate"-->
+    <!--          class="org.example.dao.TodoDaoWithHibernate"-->
+    <!--          c:sessionFactory-ref="sessionFactory"-->
+    <!--    />-->
+
+
+    <!--    <bean id="entityManagerFactory"-->
+    <!--          class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean"-->
+    <!--          p:persistenceUnitName="default"-->
+    <!--    />-->
+
+
+
+    <!--    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"-->
+    <!--          c:dataSource-ref="dataSource"-->
+    <!--    />-->
+
+
+    <!--    <bean id="todoDao" class="org.example.dao.TodoDaoWIthJdbc"-->
+    <!--          c:jdbcTemplate-ref="jdbcTemplate"-->
+    <!--    />-->
+
+</beans>

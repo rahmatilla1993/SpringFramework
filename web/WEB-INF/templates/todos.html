@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>All todos</title>
+</head>
+<body>
+
+<div class="container mt-2">
+    <div class="rows">
+        <div class="col-8 offset-2">
+            <nav th:replace="fragments :: navbar"></nav>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="todo : ${todos}" th:object="${todo}">
+                    <td th:text="*{getId()}"></td>
+                    <td th:text="*{getTitle()}"></td>
+                    <td th:text="*{getPriority()}"></td>
+                    <td>
+                        <a th:href="@{/todo/edit/{id}(id=*{getId()})}" class="btn btn-warning">Edit</a> ||
+                        <a th:href="@{/todo/delete/{id}(id=*{getId()})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<section th:replace="fragments :: js"></section>
+</body>
+</html>
