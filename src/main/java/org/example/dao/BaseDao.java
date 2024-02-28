@@ -9,13 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
 public abstract class BaseDao<T extends Auditable, ID extends Serializable> {
 
     @PersistenceContext
-    private EntityManager em;
+    protected EntityManager em;
 
     protected final Class<T> persistenceClass;
 
@@ -26,14 +27,14 @@ public abstract class BaseDao<T extends Auditable, ID extends Serializable> {
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<T> getAll() {
+    public List<T> findAll() {
         return em.createQuery("from " + persistenceClass.getSimpleName())
                 .getResultList();
     }
 
     @Transactional(readOnly = true)
-    public T getOne(ID id) {
-        return em.find(persistenceClass, id);
+    public Optional<T> findById(ID id) {
+        return Optional.ofNullable(em.find(persistenceClass, id));
     }
 
     public void save(T entity) {

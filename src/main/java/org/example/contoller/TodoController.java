@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/todo")
@@ -25,29 +26,35 @@ public class TodoController {
     @GetMapping("/all")
     public ModelAndView todos() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("todos");
-        modelAndView.addObject("todos", todoDao.getAll());
+        modelAndView.setViewName("todo/todos");
+        modelAndView.addObject("todos", todoDao.findAll());
         return modelAndView;
     }
 
     @GetMapping("/add")
     public String getAddTodoView(Model model) {
         model.addAttribute("dto", new Todo());
-        return "add_todo";
+        return "todo/add_todo";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditView(@PathVariable("id") int id, Model model) {
-        Todo todo = todoDao.getOne(id);
-        model.addAttribute("todo", todo);
-        return "edit_todo";
+        Optional<Todo> optionalTodo = todoDao.findById(id);
+        if (optionalTodo.isPresent()) {
+            Todo todo = optionalTodo.get();
+            model.addAttribute("todo", todo);
+        }
+        return "todo/edit_todo";
     }
 
     @GetMapping("/delete/{id}")
     public String getDeleteView(@PathVariable("id") int id, Model model) {
-        Todo todo = todoDao.getOne(id);
-        model.addAttribute("todo", todo);
-        return "delete_todo";
+        Optional<Todo> optionalTodo = todoDao.findById(id);
+        if (optionalTodo.isPresent()) {
+            Todo todo = optionalTodo.get();
+            model.addAttribute("todo", todo);
+        }
+        return "todo/delete_todo";
     }
 
     @PostMapping("/add")
