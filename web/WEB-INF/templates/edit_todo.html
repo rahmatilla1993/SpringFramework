@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head(~{::title})">
+<head th:replace="fragments :: head(~{::title}, ~{::link})">
+    <meta charset="UTF-8">
     <title>Intro</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <div class="container">
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1>Edit Todo</h1>
+            <h1 class="text-center mt-3">Edit Todo</h1>
             <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{getId()})}" th:object="${todo}">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="mb-3">

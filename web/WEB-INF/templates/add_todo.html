@@ -2,9 +2,10 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
 >
-<head th:replace="fragments :: head(~{::title})">
+<head th:replace="fragments :: head(~{::title}, ~{::link})">
     <meta charset="UTF-8">
     <title>Add todo</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
@@ -12,6 +13,7 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
+            <h1 class="text-center mt-3">Add todo</h1>
             <form class="mt-2" method="post" th:action="@{/todo/add}" th:object="${dto}">
                 <div class="mb-3">
                     <label for="title" class="form-label">Todo title</label>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head(~{::title})">
-    <title>Intro</title>
+<head th:replace="fragments :: head(~{::title}, ~{::link})">
+    <title>Delete todo</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <div class="container">
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
+            <h1 class="text-center mt-3">Delete todo</h1>
             <form class="mt-2" method="post" th:object="${todo}" th:action="@{/todo/delete/{id}(id=*{getId()})}">
                 <input type="hidden" value="DELETE" name="_method">
                 <h1 class="alert alert-danger" th:text="|Are you sure delete todo with title *{getTitle()} ?|"></h1>
