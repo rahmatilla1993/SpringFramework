@@ -18,6 +18,7 @@
                 <h1 class="alert alert-danger" th:text="${errorMsg}"></h1>
             </div>
             <form method="post" action="/login/process">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="uname">

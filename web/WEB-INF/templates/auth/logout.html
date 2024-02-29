@@ -15,6 +15,7 @@
             <nav th:replace="fragments :: navbar"></nav>
             <h1 class="text-center mt-3">Logout Page</h1>
             <form method="post">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <h1 class="alert alert-danger">Are you sure logout?</h1>
                 <button type="submit" class="btn btn-danger">Logout</button>
                 <a href="/" class="btn btn-success">Back</a>

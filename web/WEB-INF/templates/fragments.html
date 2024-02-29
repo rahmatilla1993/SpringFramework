@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head th:fragment="head(title, link)">
     <meta charset="UTF-8">
@@ -12,9 +13,28 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="navbar">
     <div class="container-fluid">
-        <a class="btn btn-secondary-outline" href="/auth/login">Login</a>
-        <a class="btn btn-secondary-outline" href="/todo/all">Todo List</a>
-        <a class="btn btn-secondary-outline" href="/todo/add">Add Todo</a>
+        <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/todo/all}">Todo List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/todo/add}">Add Todo</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{/auth/login}">Login</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{/auth/register}">Register</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:text="|Welcome, ${#authentication.getName()}|"></a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/auth/logout}">Logout</a>
+            </li>
+        </ul>
     </div>
 </nav>
 

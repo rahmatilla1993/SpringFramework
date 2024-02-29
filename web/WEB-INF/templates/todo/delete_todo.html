@@ -12,6 +12,7 @@
             <h1 class="text-center mt-3">Delete todo</h1>
             <form class="mt-2" method="post" th:object="${todo}" th:action="@{/todo/delete/{id}(id=*{getId()})}">
                 <input type="hidden" value="DELETE" name="_method">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <h1 class="alert alert-danger" th:text="|Are you sure delete todo with title *{getTitle()} ?|"></h1>
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <a th:href="@{/todo/all}" class="btn btn-success">Back</a>

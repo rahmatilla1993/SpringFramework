@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserSecurity implements UserDetails {
+public class SecurityUser implements UserDetails {
     private final AuthUser authUser;
 
-    public UserSecurity(AuthUser authUser) {
+    public SecurityUser(AuthUser authUser) {
         this.authUser = authUser;
     }
 

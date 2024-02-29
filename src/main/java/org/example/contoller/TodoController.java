@@ -1,6 +1,6 @@
 package org.example.contoller;
 
-import org.example.config.security.UserSecurity;
+import org.example.config.security.SecurityUser;
 import org.example.dao.AuthUserDao;
 import org.example.dao.TodoDao;
 import org.example.dto.TodoDto;
@@ -9,7 +9,6 @@ import org.example.entity.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +96,7 @@ public class TodoController {
     }
 
     private Optional<AuthUser> findUserByUsername() {
-        String username = ((UserSecurity) SecurityContextHolder
+        String username = ((SecurityUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal())

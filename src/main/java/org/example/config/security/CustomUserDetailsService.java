@@ -3,7 +3,6 @@ package org.example.config.security;
 import org.example.dao.AuthUserDao;
 import org.example.entity.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<AuthUser> optionalAuthUser = authUserDao.findByUsername(username);
         if (optionalAuthUser.isPresent()) {
             AuthUser authUser = optionalAuthUser.get();
-            return new UserSecurity(authUser);
+            return new SecurityUser(authUser);
         } else {
             throw new UsernameNotFoundException("User with '%s' username not found!".formatted(username));
         }

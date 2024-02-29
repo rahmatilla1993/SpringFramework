@@ -9,12 +9,13 @@
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container">
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
             <h1 class="text-center mt-3">Add todo</h1>
             <form class="mt-2" method="post" th:action="@{/todo/add}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="title" class="form-label">Todo title</label>
                     <input type="text" class="form-control" id="title" name="title">

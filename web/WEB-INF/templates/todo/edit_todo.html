@@ -13,6 +13,7 @@
             <h1 class="text-center mt-3">Edit Todo</h1>
             <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{getId()})}" th:object="${todo}">
                 <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="title" class="form-label">Todo title</label>
                     <input type="text" class="form-control" id="title" name="title"
