@@ -31,6 +31,9 @@
             <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a class="nav-link" th:text="|Welcome, ${#authentication.getName()}|"></a>
             </li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="btn btn-secondary-outline" th:href="@{/admin/user_manage}">User Manage</a>
+            </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a class="nav-link" th:href="@{/auth/logout}">Logout</a>
             </li>

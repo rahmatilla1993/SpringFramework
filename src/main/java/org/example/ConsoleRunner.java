@@ -13,24 +13,8 @@ import java.util.List;
 public class ConsoleRunner {
     public static void main(String[] args) {
         try (var context = new ClassPathXmlApplicationContext("classpath:/data-config.xml")) {
-//            AuthUserDao dao = context.getBean(AuthUserDao.class);
-//            RoleDao roleDao = context.getBean(RoleDao.class);
-//            Permission permission1 = Permission
-//                    .builder()
-//                    .name("block user")
-//                    .code("BLOCK_USER")
-//                    .createdAt(LocalDateTime.now())
-//                    .build();
-//            Role role = Role
-//                    .builder()
-//                    .name("admin")
-//                    .createdAt(LocalDateTime.now())
-//                    .code(RoleName.ROLE_ADMIN)
-//                    .permissions(List.of(permission1))
-//                    .build();
-//
-//            permission1.addRole(role);
-//            roleDao.save(role);
+            AuthUserDao dao = context.getBean(AuthUserDao.class);
+            dao.findAllUsersByRole(RoleName.ROLE_ADMIN).forEach(System.out::println);
         }
     }
 }

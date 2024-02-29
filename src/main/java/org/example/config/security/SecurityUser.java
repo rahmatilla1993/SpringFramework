@@ -1,25 +1,28 @@
 package org.example.config.security;
 
+import lombok.Getter;
 import org.example.entity.AuthUser;
+import org.example.enums.Status;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-public class SecurityUser implements UserDetails {
-    private final AuthUser authUser;
-
-    public SecurityUser(AuthUser authUser) {
-        this.authUser = authUser;
-    }
+public record SecurityUser(AuthUser authUser) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authUser.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getCode().name()))
-                .toList();
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authUser.getRoles().forEach(role -> {
+            authorityList.add(new SimpleGrantedAuthority(role.getCode().name()));
+            role.getPermissions().forEach(permission ->
+                    authorityList.add(new SimpleGrantedAuthority(permission.getCode()))
+            );
+        });
+        return authorityList;
     }
 
     @Override
@@ -34,21 +37,21 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return authUser.getStatus().equals(Status.ACTIVE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return authUser.getStatus().equals(Status.ACTIVE);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return authUser.getStatus().equals(Status.ACTIVE);
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return authUser.getStatus().equals(Status.ACTIVE);
     }
 }

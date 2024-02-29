@@ -2,6 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ public class AuthUser extends Auditable {
     private String username;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Builder
-    public AuthUser(int id, LocalDateTime createdAt, String username, String password, List<Role> roles) {
+    public AuthUser(int id, LocalDateTime createdAt, String username, String password, List<Role> roles, Status status) {
         super(id, createdAt);
         this.username = username;
         this.password = password;
         this.roles = roles;
+        this.status = status;
     }
 
     @ManyToMany(fetch = FetchType.EAGER)

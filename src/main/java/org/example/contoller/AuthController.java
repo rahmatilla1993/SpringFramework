@@ -5,6 +5,7 @@ import org.example.dao.RoleDao;
 import org.example.dto.AuthUserDto;
 import org.example.entity.AuthUser;
 import org.example.enums.RoleName;
+import org.example.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,7 @@ public class AuthController {
                         .username(dto.username())
                         .roles(List.of(role))
                         .password(passwordEncoder.encode(dto.password()))
+                        .status(Status.ACTIVE)
                         .createdAt(LocalDateTime.now())
                         .build())
                 );

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments :: head(~{::title}, ~{::link})">
+    <meta charset="UTF-8">
+    <title>User Block Page</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="rows">
+        <div class="col-8 offset-2">
+            <nav th:replace="fragments :: navbar"></nav>
+            <h1 class="text-center mt-3">User Block</h1>
+            <form class="mt-2" method="post" th:object="${user}" th:action="@{/admin/user_block/{id}(id=*{getId()})}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input class="form-control" type="text" id="username" name="username"
+                           th:attr="value=*{getUsername()}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="ACTIVE" th:selected="*{getStatus() == 'ACTIVE'}">Active</option>
+                        <option value="BLOCKED" th:selected="*{getStatus() == 'BLOCKED'}">Blocked
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Accept</button>
+                <a class="btn btn-primary-outline" th:href="@{/}">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<section th:replace="fragments :: js"></section>
+</body>
+</html>

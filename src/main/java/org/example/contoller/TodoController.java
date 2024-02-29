@@ -1,14 +1,11 @@
 package org.example.contoller;
 
-import org.example.config.security.SecurityUser;
-import org.example.dao.AuthUserDao;
+import org.example.config.security.SessionUser;
 import org.example.dao.TodoDao;
 import org.example.dto.TodoDto;
-import org.example.entity.AuthUser;
 import org.example.entity.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +13,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
 
     private final TodoDao todoDao;
-    private final AuthUserDao authUserDao;
+    private final SessionUser sessionUser;
 
     @Autowired
-    public TodoController(TodoDao todoDao, AuthUserDao authUserDao) {
+    public TodoController(TodoDao todoDao, SessionUser sessionUser) {
         this.todoDao = todoDao;
-        this.authUserDao = authUserDao;
+        this.sessionUser = sessionUser;
     }
 
     @GetMapping("/all")
@@ -36,11 +32,12 @@ public class TodoController {
     public ModelAndView todos() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("todo/todos");
-        findUserByUsername().ifPresent(user -> {
-                    List<Todo> todoList = todoDao.findAllByCreatedUser(user);
-                    modelAndView.addObject("todos", todoList);
-                }
-        );
+        sessionUser.getAuthUser()
+                .ifPresent(user -> {
+                            List<Todo> todoList = todoDao.findAllByCreatedUser(user);
+                            modelAndView.addObject("todos", todoList);
+                        }
+                );
         return modelAndView;
     }
 
@@ -66,14 +63,15 @@ public class TodoController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String saveTodo(@ModelAttribute TodoDto dto) {
-        findUserByUsername().ifPresent(user -> todoDao.save(Todo
-                .builder()
-                .title(dto.title())
-                .priority(dto.priority())
-                .createdAt(LocalDateTime.now())
-                .createdUser(user)
-                .build())
-        );
+        sessionUser.getAuthUser()
+                .ifPresent(user -> todoDao.save(Todo
+                        .builder()
+                        .title(dto.title())
+                        .priority(dto.priority())
+                        .createdAt(LocalDateTime.now())
+                        .createdUser(user)
+                        .build())
+                );
         return "redirect:/todo/all";
     }
 
@@ -93,14 +91,5 @@ public class TodoController {
     public String delete(@PathVariable("id") int id) {
         todoDao.delete(id);
         return "redirect:/todo/all";
-    }
-
-    private Optional<AuthUser> findUserByUsername() {
-        String username = ((SecurityUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getUsername();
-        return authUserDao.findByUsername(username);
     }
 }

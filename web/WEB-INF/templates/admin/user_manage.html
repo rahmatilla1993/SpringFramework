@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="fragments :: head(~{::title}, ~{::link})">
+    <meta charset="UTF-8">
+    <title>User Manage Page</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="rows">
+        <div class="col-8 offset-2">
+            <nav th:replace="fragments :: navbar"></nav>
+            <h1 class="text-center mt-3">User Manage</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}" th:object="${user}">
+                    <td th:text="*{getUsername()}"></td>
+                    <td th:text="*{getStatus()}"></td>
+                    <td>
+                        <a th:href="@{/admin/user_block/{id}(id=*{getId()})}" class="btn btn-warning">Set Status</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-success" th:href="@{/}">Back</a>
+        </div>
+    </div>
+</div>
+
+<section th:replace="fragments :: js"></section>
+</body>
+</html>

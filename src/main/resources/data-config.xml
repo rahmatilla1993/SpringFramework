@@ -34,9 +34,9 @@
 
     <tx:annotation-driven/>
 
-<!--    <bean id="authUserDao"-->
-<!--          class="org.example.dao.AuthUserDao"-->
-<!--    />-->
+    <bean id="authUserDao"
+          class="org.example.dao.AuthUserDao"
+    />
 
 <!--    <bean id="roleDao"-->
 <!--          class="org.example.dao.RoleDao"-->
