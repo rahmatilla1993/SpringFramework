@@ -1,9 +1,10 @@
 package org.example.contoller;
 
 import org.example.dao.AuthUserDao;
+import org.example.dao.RoleDao;
 import org.example.dto.AuthUserDto;
 import org.example.entity.AuthUser;
-import org.example.enums.Role;
+import org.example.enums.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,17 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthUserDao dao;
+    private final AuthUserDao authUserDao;
+    private final RoleDao roleDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(AuthUserDao dao, PasswordEncoder passwordEncoder) {
-        this.dao = dao;
+    public AuthController(AuthUserDao authUserDao, RoleDao roleDao, PasswordEncoder passwordEncoder) {
+        this.authUserDao = authUserDao;
+        this.roleDao = roleDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -45,12 +49,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute AuthUserDto dto) {
-        dao.save(AuthUser.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .role(Role.ROLE_USER)
-                .createdAt(LocalDateTime.now())
-                .build());
+        roleDao.findByCode(RoleName.ROLE_USER)
+                .ifPresent(role -> authUserDao.save(AuthUser.builder()
+                        .username(dto.username())
+                        .roles(List.of(role))
+                        .password(passwordEncoder.encode(dto.password()))
+                        .createdAt(LocalDateTime.now())
+                        .build())
+                );
         return "redirect:/auth/login";
     }
 }
