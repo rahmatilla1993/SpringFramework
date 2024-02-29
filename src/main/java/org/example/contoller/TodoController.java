@@ -1,11 +1,13 @@
 package org.example.contoller;
 
+import org.example.config.security.UserSecurity;
 import org.example.dao.AuthUserDao;
 import org.example.dao.TodoDao;
 import org.example.dto.TodoDto;
 import org.example.entity.AuthUser;
 import org.example.entity.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class TodoController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ModelAndView todos() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("todo/todos");
@@ -62,6 +65,7 @@ public class TodoController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String saveTodo(@ModelAttribute TodoDto dto) {
         findUserByUsername().ifPresent(user -> todoDao.save(Todo
                 .builder()
@@ -75,6 +79,7 @@ public class TodoController {
     }
 
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String edit(@PathVariable("id") int id, @ModelAttribute TodoDto dto) {
         todoDao.findById(id).ifPresent(todo -> {
             todo.setPriority(dto.priority());
@@ -85,13 +90,14 @@ public class TodoController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String delete(@PathVariable("id") int id) {
         todoDao.delete(id);
         return "redirect:/todo/all";
     }
 
     private Optional<AuthUser> findUserByUsername() {
-        String username = ((User) SecurityContextHolder
+        String username = ((UserSecurity) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal())

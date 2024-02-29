@@ -22,7 +22,10 @@ public class Role extends Auditable {
     @Enumerated(EnumType.STRING)
     private RoleName code;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER
+    )
     @JoinTable(
             name = "authrole_authpermission",
             joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},

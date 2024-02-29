@@ -26,11 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<AuthUser> optionalAuthUser = authUserDao.findByUsername(username);
         if (optionalAuthUser.isPresent()) {
             AuthUser authUser = optionalAuthUser.get();
-            return User
-                    .builder()
-                    .username(authUser.getUsername())
-                    .password(authUser.getPassword())
-                    .build();
+            return new UserSecurity(authUser);
         } else {
             throw new UsernameNotFoundException("User with '%s' username not found!".formatted(username));
         }

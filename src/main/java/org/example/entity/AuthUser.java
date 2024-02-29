@@ -29,7 +29,7 @@ public class AuthUser extends Auditable {
         this.roles = roles;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "authuser_authrole",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
