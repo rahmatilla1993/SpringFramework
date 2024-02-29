@@ -1,10 +1,13 @@
 package org.example.dao;
 
 import jakarta.persistence.ParameterMode;
+import org.example.dto.AuthUserDto;
 import org.example.dto.UserStatusDto;
 import org.example.entity.AuthUser;
 import org.example.enums.RoleName;
 import org.example.enums.Status;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,13 @@ import java.util.Optional;
 
 @Component
 public class AuthUserDao extends BaseDao<AuthUser, Integer> {
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public AuthUserDao(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional(readOnly = true)
     public Optional<AuthUser> findByUsername(String username) {
@@ -41,5 +51,14 @@ public class AuthUserDao extends BaseDao<AuthUser, Integer> {
                 .setParameter("status", Status.valueOf(dto.getStatus()))
                 .setParameter("id", dto.getId())
                 .executeUpdate();
+    }
+
+    @Transactional
+    public AuthUser saveAuthUser(AuthUserDto dto) {
+        return (AuthUser) em.createNativeQuery(
+                        "insert into auth_user(username, password) VALUES (:username, :password) returning *;")
+                .setParameter("username", dto.username())
+                .setParameter("password", passwordEncoder.encode(dto.password()))
+                .getSingleResult();
     }
 }

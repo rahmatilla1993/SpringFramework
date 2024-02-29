@@ -1,3 +1,5 @@
 package org.example.dto;
 
-public record AuthUserDto(String username, String password) { }
+import org.springframework.web.multipart.MultipartFile;
+
+public record AuthUserDto(String username, String password, MultipartFile file) { }
