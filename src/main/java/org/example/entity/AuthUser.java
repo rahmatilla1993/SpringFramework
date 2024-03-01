@@ -25,14 +25,11 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Builder
-    public AuthUser(int id, LocalDateTime createdAt, String username, String password, List<Role> roles, Status status) {
-        super(id, createdAt);
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-        this.status = status;
-    }
+    @OneToOne(
+            mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private FileStorage fileStorage;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -42,6 +39,15 @@ public class AuthUser extends Auditable {
             uniqueConstraints = {@UniqueConstraint(name = "UK_user_role", columnNames = {"user_id", "role_id"})}
     )
     private List<Role> roles;
+
+    @Builder
+    public AuthUser(int id, LocalDateTime createdAt, String username, String password, List<Role> roles, Status status) {
+        super(id, createdAt);
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.status = status;
+    }
 
     public void addRole(Role role) {
         if (Objects.isNull(roles)) {

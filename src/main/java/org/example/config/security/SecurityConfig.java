@@ -34,7 +34,7 @@ public class SecurityConfig {
         http
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/css/*", "/auth/*")
+                        auth.requestMatchers("/css/*", "/js/*","/auth/*")
                                 .permitAll()
                                 .anyRequest()
                                 .fullyAuthenticated()

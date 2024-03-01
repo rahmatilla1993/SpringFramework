@@ -1,9 +1,6 @@
 package org.example.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = {"user"})
 @Table(name = "file_storage")
 public class FileStorage extends Auditable {
 
@@ -28,6 +26,7 @@ public class FileStorage extends Auditable {
     private long size;
 
     @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AuthUser user;
 
     @Builder

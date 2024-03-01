@@ -13,26 +13,26 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">Login Page</h1>
+            <h1 class="text-center mt-3" th:text="#{login}"></h1>
             <div th:if="${errorMsg}">
                 <h1 class="alert alert-danger" th:text="${errorMsg}"></h1>
             </div>
             <form method="post" action="/login/process">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label" th:text="#{username}"></label>
                     <input type="text" class="form-control" id="username" name="uname">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label" th:text="#{password}"></label>
                     <input type="password" class="form-control" id="password" name="pswd">
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" name="rememberMe" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                    <label class="form-check-label" for="rememberMe" th:text="#{rem_me}"></label>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-                <a href="/auth/register" class="btn btn-success">Register</a>
+                <button type="submit" class="btn btn-primary" th:text="#{login}"></button>
+                <a href="/auth/register" class="btn btn-success" th:text="#{register}"></a>
             </form>
         </div>
     </div>

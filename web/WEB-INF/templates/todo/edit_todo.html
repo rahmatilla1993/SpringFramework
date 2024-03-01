@@ -10,25 +10,25 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">Edit Todo</h1>
+            <h1 class="text-center mt-3" th:text="#{edit}"></h1>
             <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{getId()})}" th:object="${todo}">
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Todo title</label>
+                    <label for="title" class="form-label" th:text="#{todo_title}"></label>
                     <input type="text" class="form-control" id="title" name="title"
                            th:attr="value=*{getTitle()}">
                 </div>
                 <div class="mb-3">
-                    <label for="priority" class="form-label">Priority</label>
+                    <label for="priority" class="form-label" th:text="#{priority}"></label>
                     <select name="priority" id="priority" class="form-select"
                             th:attr="value=*{getPriority()}">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="low" th:text="#{prior_low}"></option>
+                        <option value="medium" th:text="#{prior_med}"></option>
+                        <option value="high" th:text="#{prior_high}"></option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="submit" class="btn btn-primary" th:text="#{edit}"></button>
             </form>
         </div>
     </div>

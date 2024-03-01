@@ -1,6 +1,5 @@
 package org.example.config.security;
 
-import lombok.Getter;
 import org.example.entity.AuthUser;
 import org.example.enums.Status;
 import org.springframework.security.core.GrantedAuthority;

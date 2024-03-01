@@ -18,7 +18,8 @@
     <mvc_c:annotation-config/>
 
     <mvc:annotation-driven/>
-    <mvc:resources mapping="/css/*" location="/WEB-INF/static/css/" />
+    <mvc:resources mapping="/css/*" location="/WEB-INF/static/css/"/>
+    <mvc:resources mapping="/js/*" location="/WEB-INF/static/js/"/>
 
     <bean id="templateResolver"
           class="org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver">
@@ -32,6 +33,7 @@
           class="org.thymeleaf.spring6.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver"/>
         <property name="enableSpringELCompiler" value="true"/>
+        <property name="messageSource" ref="messageSource"/>
         <property name="additionalDialects">
             <set>
                 <bean class="org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect"/>
@@ -41,10 +43,32 @@
 
     <bean class="org.thymeleaf.spring6.view.ThymeleafViewResolver">
         <property name="templateEngine" ref="templateEngine"/>
+        <property name="characterEncoding" value="UTF-8"/>
         <property name="order" value="1"/>
     </bean>
 
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.support.StandardServletMultipartResolver"
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+          p:basename="classpath:/i18n/messages"
+          p:defaultEncoding="UTF-8"
+          p:defaultLocale="uz_UZB"
     />
+
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+    />
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean
+                    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
+                    p:paramName="lang"
+            />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

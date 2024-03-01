@@ -13,13 +13,13 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">User Manage</h1>
+            <h1 class="text-center mt-3" th:text="#{user_manage}"></h1>
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" th:text="#{username}"></th>
+                    <th scope="col" th:text="#{status}"></th>
+                    <th scope="col" th:text="#{actions}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,12 +27,12 @@
                     <td th:text="*{getUsername()}"></td>
                     <td th:text="*{getStatus()}"></td>
                     <td>
-                        <a th:href="@{/admin/user_block/{id}(id=*{getId()})}" class="btn btn-warning">Set Status</a>
+                        <a th:href="@{/admin/user_block/{id}(id=*{getId()})}" class="btn btn-warning" th:text="#{set_status}"></a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <a class="btn btn-success" th:href="@{/}">Back</a>
+            <a class="btn btn-success" th:href="@{/}" th:text="#{back}"></a>
         </div>
     </div>
 </div>

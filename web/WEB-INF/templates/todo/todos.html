@@ -13,14 +13,14 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">All todos</h1>
+            <h1 class="text-center mt-3" th:text="#{all_todos}"></h1>
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Priority</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col" th:text="#{title}"></th>
+                    <th scope="col" th:text="#{priority}"></th>
+                    <th scope="col" th:text="#{actions}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,8 +29,8 @@
                     <td th:text="*{getTitle()}"></td>
                     <td th:text="*{getPriority()}"></td>
                     <td>
-                        <a th:href="@{/todo/edit/{id}(id=*{getId()})}" class="btn btn-warning">Edit</a> ||
-                        <a th:href="@{/todo/delete/{id}(id=*{getId()})}" class="btn btn-danger">Delete</a>
+                        <a th:href="@{/todo/edit/{id}(id=*{getId()})}" class="btn btn-warning" th:text="#{edit}"></a> ||
+                        <a th:href="@{/todo/delete/{id}(id=*{getId()})}" class="btn btn-danger" th:text="#{delete}"></a>
                     </td>
                 </tr>
                 </tbody>

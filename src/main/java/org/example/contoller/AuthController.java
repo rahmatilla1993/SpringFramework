@@ -8,6 +8,7 @@ import org.example.entity.AuthUser;
 import org.example.entity.FileStorage;
 import org.example.enums.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +30,18 @@ public class AuthController {
     private final AuthUserDao authUserDao;
     private final RoleDao roleDao;
     private final FileStorageDao fileStorageDao;
+    private final PasswordEncoder passwordEncoder;
     private final Path rootPath = Path.of(System.getProperty("user.home"), "/download");
 
     @Autowired
-    public AuthController(AuthUserDao authUserDao, RoleDao roleDao, FileStorageDao fileStorageDao) {
+    public AuthController(AuthUserDao authUserDao,
+                          RoleDao roleDao,
+                          FileStorageDao fileStorageDao,
+                          PasswordEncoder passwordEncoder) {
         this.authUserDao = authUserDao;
         this.roleDao = roleDao;
         this.fileStorageDao = fileStorageDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/login")
@@ -58,12 +64,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute AuthUserDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         roleDao.findByCode(RoleName.ROLE_USER)
                 .ifPresent(role -> {
                             AuthUser authUser = authUserDao.saveAuthUser(dto);
                             authUser.setRoles(List.of(role));
                             authUserDao.edit(authUser);
-                            uploadFile(dto.file(), authUser);
+                            uploadFile(dto.getFile(), authUser);
                         }
                 );
         return "redirect:/auth/login";

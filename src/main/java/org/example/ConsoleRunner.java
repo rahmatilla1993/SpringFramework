@@ -14,7 +14,8 @@ public class ConsoleRunner {
     public static void main(String[] args) {
         try (var context = new ClassPathXmlApplicationContext("classpath:/data-config.xml")) {
             AuthUserDao dao = context.getBean(AuthUserDao.class);
-            dao.findAllUsersByRole(RoleName.ROLE_ADMIN).forEach(System.out::println);
+            dao.findAllUsersByRole(RoleName.ROLE_USER).forEach(System.out::println);
+//            dao.findAll().forEach(System.out::println);
         }
     }
 }

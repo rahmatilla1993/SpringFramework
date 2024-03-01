@@ -9,13 +9,16 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">Delete todo</h1>
+            <h1 class="text-center mt-3" th:text="#{delete}"></h1>
             <form class="mt-2" method="post" th:object="${todo}" th:action="@{/todo/delete/{id}(id=*{getId()})}">
                 <input type="hidden" value="DELETE" name="_method">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
-                <h1 class="alert alert-danger" th:text="|Are you sure delete todo with title *{getTitle()} ?|"></h1>
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a th:href="@{/todo/all}" class="btn btn-success">Back</a>
+                <h1 class="alert alert-danger"
+                    th:with="title=*{getTitle()}"
+                    th:text="${#messages.msg('delete_todo', title)}"
+                ></h1>
+                <button type="submit" class="btn btn-danger" th:text="#{delete}"></button>
+                <a th:href="@{/todo/all}" class="btn btn-success" th:text="#{back}"></a>
             </form>
         </div>
     </div>

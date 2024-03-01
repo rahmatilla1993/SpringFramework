@@ -13,24 +13,24 @@
     <div class="rows">
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
-            <h1 class="text-center mt-3">User Block</h1>
+            <h1 class="text-center mt-3" th:text="#{user_block}"></h1>
             <form class="mt-2" method="post" th:object="${user}" th:action="@{/admin/user_block/{id}(id=*{getId()})}">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label" th:text="#{username}"></label>
                     <input class="form-control" type="text" id="username" name="username"
                            th:attr="value=*{getUsername()}" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
+                    <label for="status" class="form-label" th:text="#{status}"></label>
                     <select name="status" id="status" class="form-select">
-                        <option value="ACTIVE" th:selected="*{getStatus() == 'ACTIVE'}">Active</option>
-                        <option value="BLOCKED" th:selected="*{getStatus() == 'BLOCKED'}">Blocked
+                        <option value="ACTIVE" th:selected="*{getStatus() == 'ACTIVE'}" th:text="#{active}"></option>
+                        <option value="BLOCKED" th:selected="*{getStatus() == 'BLOCKED'}" th:text="#{block}">
                         </option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success">Accept</button>
-                <a class="btn btn-primary-outline" th:href="@{/}">Back</a>
+                <button type="submit" class="btn btn-success" th:text="#{accept}"></button>
+                <a class="btn btn-primary-outline" th:href="@{/}" th:text="#{back}"></a>
             </form>
         </div>
     </div>
