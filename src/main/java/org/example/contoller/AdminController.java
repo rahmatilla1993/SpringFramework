@@ -23,7 +23,7 @@ public class AdminController {
 
     @GetMapping("/user_manage")
     public ModelAndView getUserManage() {
-        List<UserStatusDto> userList = authUserDao.findAllUsersByRole(RoleName.ROLE_USER)
+        List<UserStatusDto> userList = authUserDao.findAllUsersByRole2(RoleName.ROLE_USER)
                 .stream()
                 .map(UserStatusDto::new)
                 .toList();

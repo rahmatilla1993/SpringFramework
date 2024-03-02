@@ -36,6 +36,15 @@ public class AuthUserDao extends BaseDao<AuthUser, Integer> {
                 .getResultList();
     }
 
+    @Transactional(readOnly = true)
+    public List<AuthUser> findAllUsersByRole2(RoleName roleName) {
+        return em.createQuery(
+                        "select distinct au from AuthUser au join au.roles r where cast(r.code as string) = :rolename",
+                        AuthUser.class)
+                .setParameter("rolename", roleName.name())
+                .getResultList();
+    }
+
     @Transactional
     public void setUserStatus(UserStatusDto dto) {
         em.createQuery("update AuthUser set status = :status where id = :id")

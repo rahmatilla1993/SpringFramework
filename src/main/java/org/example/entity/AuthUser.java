@@ -3,6 +3,8 @@ package org.example.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.enums.Status;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class AuthUser extends Auditable {
     private FileStorage fileStorage;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "authuser_authrole",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
