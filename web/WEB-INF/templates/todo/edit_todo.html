@@ -11,22 +11,32 @@
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
             <h1 class="text-center mt-3" th:text="#{edit}"></h1>
-            <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{getId()})}" th:object="${todo}">
+            <form class="mt-2" method="post" th:action="@{/todo/edit/{id}(id=*{id})}" th:object="${dto}">
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="title" class="form-label" th:text="#{todo_title}"></label>
                     <input type="text" class="form-control" id="title" name="title"
-                           th:attr="value=*{getTitle()}">
+                           th:attr="value=*{title}">
+                    <div th:if="${#fields.hasErrors('title')}"
+                         class="text-danger"
+                         th:each="err : ${#fields.errors('title')}"
+                         th:text="${#messages.msg(err, 'title')}">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="priority" class="form-label" th:text="#{priority}"></label>
                     <select name="priority" id="priority" class="form-select"
-                            th:attr="value=*{getPriority()}">
+                            th:attr="value=*{priority}">
                         <option value="low" th:text="#{prior_low}"></option>
                         <option value="medium" th:text="#{prior_med}"></option>
                         <option value="high" th:text="#{prior_high}"></option>
                     </select>
+                    <div th:if="${#fields.hasErrors('priority')}"
+                         class="text-danger"
+                         th:each="err : ${#fields.errors('priority')}"
+                         th:text="${#messages.msg(err, 'priority')}">
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" th:text="#{edit}"></button>
             </form>

@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc_c="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -56,11 +56,12 @@
 
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+          c:cookieName="language"
     />
 
     <bean id="multipartResolver"
-          class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-    </bean>
+          class="org.springframework.web.multipart.support.StandardServletMultipartResolver"
+    />
 
     <mvc:interceptors>
         <mvc:interceptor>

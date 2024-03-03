@@ -56,7 +56,8 @@ public class AuthUserDao extends BaseDao<AuthUser, Integer> {
     @Transactional
     public AuthUser saveAuthUser(AuthUserDto dto) {
         return (AuthUser) em.createNativeQuery(
-                        "insert into auth_user(username, password) VALUES (:username, :password) returning *;", AuthUser.class)
+                        "insert into auth_user(username, password) VALUES (:username, :password) returning *;",
+                        AuthUser.class)
                 .setParameter("username", dto.getUsername())
                 .setParameter("password", dto.getPassword())
                 .getSingleResult();

@@ -25,12 +25,12 @@
                 </thead>
                 <tbody>
                 <tr th:each="todo : ${todos}" th:object="${todo}">
-                    <td th:text="*{getId()}"></td>
-                    <td th:text="*{getTitle()}"></td>
-                    <td th:text="*{getPriority()}"></td>
+                    <td th:text="*{id}"></td>
+                    <td th:text="*{title}"></td>
+                    <td th:text="*{priority}"></td>
                     <td>
-                        <a th:href="@{/todo/edit/{id}(id=*{getId()})}" class="btn btn-warning" th:text="#{edit}"></a> ||
-                        <a th:href="@{/todo/delete/{id}(id=*{getId()})}" class="btn btn-danger" th:text="#{delete}"></a>
+                        <a th:href="@{/todo/edit/{id}(id=*{id})}" class="btn btn-warning" th:text="#{edit}"></a> ||
+                        <a th:href="@{/todo/delete/{id}(id=*{id})}" class="btn btn-danger" th:text="#{delete}"></a>
                     </td>
                 </tr>
                 </tbody>

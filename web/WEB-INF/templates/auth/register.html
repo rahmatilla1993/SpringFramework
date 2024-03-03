@@ -14,22 +14,51 @@
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
             <h1 class="text-center mt-3" th:text="#{register}"></h1>
-            <div th:if="${errorMsg}">
-                <h1 class="alert alert-danger" th:text="${errorMsg}"></h1>
-            </div>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" th:object="${dto}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <div class="mb-3">
                     <label for="username" class="form-label" th:text="#{username}"></label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                    <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
+                    <input type="text" class="form-control"
+                           id="username" name="username"
+                           th:field="*{username}">
+                    <div th:if="${#fields.hasErrors('username')}">
+                        <p
+                                class="text-danger"
+                                th:each="er : ${#fields.errors('username')}"
+                                th:with="val=${error ?: 'username'}"
+                                th:text="${#messages.msg(er, val)}"
+                        ></p>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label" th:text="#{password}"></label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="password" class="form-control"
+                           id="password" name="password"
+                           th:field="*{password}"
+                           th:placeholder="#{password_pattern}"
+                    >
+                    <div th:if="${#fields.hasErrors('password')}">
+                        <p
+                                class="text-danger"
+                                th:each="er : ${#fields.errors('password')}"
+                                th:text="${#messages.msg(er, 'parol')}"
+                        ></p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="conf_password" class="form-label" th:text="#{title_conf_password}"></label>
+                    <input type="password" class="form-control"
+                           id="conf_password"
+                           th:field="*{confirmPassword}"
+                    >
+                    <div th:if="${#fields.hasErrors('confirmPassword')}"
+                         class="text-danger"
+                         th:errors="*{confirmPassword}">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="file_upload" class="form-label" th:text="#{choose_file}"></label>
-                    <input type="file" id="file_upload" name="file" required>
+                    <input type="file" id="file_upload" name="file">
                 </div>
                 <button type="submit" class="btn btn-primary" th:text="#{register}"></button>
                 <a href="/auth/login" class="btn btn-success" th:text="#{login}"></a>

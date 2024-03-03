@@ -1,16 +1,20 @@
 package org.example.contoller;
 
+import jakarta.validation.Valid;
 import org.example.dao.AuthUserDao;
 import org.example.dao.FileStorageDao;
 import org.example.dao.RoleDao;
 import org.example.dto.AuthUserDto;
 import org.example.entity.AuthUser;
 import org.example.entity.FileStorage;
+import org.example.entity.Role;
 import org.example.enums.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +41,8 @@ public class AuthController {
     public AuthController(AuthUserDao authUserDao,
                           RoleDao roleDao,
                           FileStorageDao fileStorageDao,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder
+    ) {
         this.authUserDao = authUserDao;
         this.roleDao = roleDao;
         this.fileStorageDao = fileStorageDao;
@@ -58,21 +63,37 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String registerView() {
+    public String registerView(Model model) {
+        model.addAttribute("dto", new AuthUserDto());
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute AuthUserDto dto) {
+    public String register(@Valid @ModelAttribute("dto") AuthUserDto dto,
+                           BindingResult errors, Model model) {
+        if (!checkConfirmPassword(dto)) {
+            errors.rejectValue("confirmPassword", "conf_password");
+        }
+        if (errors.hasErrors()) {
+            return "auth/register";
+        }
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        roleDao.findByCode(RoleName.ROLE_USER)
-                .ifPresent(role -> {
-                            AuthUser authUser = authUserDao.saveAuthUser(dto);
-                            authUser.setRoles(List.of(role));
-                            authUserDao.edit(authUser);
-                            uploadFile(dto.getFile(), authUser);
-                        }
-                );
+        authUserDao.findByUsername(dto.getUsername())
+                .ifPresentOrElse((authUser -> {
+                    model.addAttribute("error", authUser.getUsername());
+                    errors.rejectValue("username", "user_ex");
+                }), (() -> {
+                    Role role = roleDao.findByCode(RoleName.ROLE_USER).get();
+                    AuthUser authUser = authUserDao.saveAuthUser(dto);
+                    authUser.setRoles(List.of(role));
+                    authUserDao.edit(authUser);
+                    uploadFile(dto.getFile(), authUser);
+                }));
+
+        // agar username database da bor bo'lsa
+        if (errors.hasErrors()) {
+            return "auth/register";
+        }
         return "redirect:/auth/login";
     }
 
@@ -93,5 +114,9 @@ public class AuthController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean checkConfirmPassword(AuthUserDto dto) {
+        return dto.getPassword().equals(dto.getConfirmPassword());
     }
 }

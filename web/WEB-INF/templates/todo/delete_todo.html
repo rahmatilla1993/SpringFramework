@@ -10,11 +10,11 @@
         <div class="col-8 offset-2">
             <nav th:replace="fragments :: navbar"></nav>
             <h1 class="text-center mt-3" th:text="#{delete}"></h1>
-            <form class="mt-2" method="post" th:object="${todo}" th:action="@{/todo/delete/{id}(id=*{getId()})}">
+            <form class="mt-2" method="post" th:object="${dto}" th:action="@{/todo/delete/{id}(id=*{id})}">
                 <input type="hidden" value="DELETE" name="_method">
                 <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
                 <h1 class="alert alert-danger"
-                    th:with="title=*{getTitle()}"
+                    th:with="title=*{title}"
                     th:text="${#messages.msg('delete_todo', title)}"
                 ></h1>
                 <button type="submit" class="btn btn-danger" th:text="#{delete}"></button>
